@@ -1,0 +1,277 @@
+<template>
+    <div class="container">
+        <h1 class="text-center my-4">Gestión de Gastos Comunes</h1>
+  
+      <!-- Formulario para generar gasto común -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h3>Generar Gasto Común</h3>
+        </div>
+        <div class="card-body">
+          <form @submit.prevent="generarGastoComun">
+            <div class="mb-3">
+              <label class="form-label">Mes</label>
+              <select v-model="gastoForm.mes" class="form-select">
+                <option v-for="mes in meses" :key="mes" :value="mes">{{ mes }}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Año</label>
+              <input type="number" v-model="gastoForm.anio" class="form-control" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Valor</label>
+              <input type="number" v-model="gastoForm.valor" class="form-control" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Departamento</label>
+              <select v-model="gastoForm.nro_departamento" class="form-select">
+                <option v-for="residente in residentes" :key="residente._id" :value="residente.nro_departamento">
+                  {{ residente.nro_departamento }} - {{ residente.Nombre }} {{ residente.ApePat }}
+                </option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Generar Gasto Común</button>
+          </form>
+        </div>
+      </div>
+  
+      <!-- Filtro de departamentos -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h3>Lista de Gastos Comunes</h3>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label">Seleccione un departamento</label>
+            <select v-model="departamentoSeleccionado" class="form-select" @change="filtrarGastos">
+              <option value="">Todos los departamentos</option>
+              <option v-for="residente in residentes" :key="residente._id" :value="residente.nro_departamento">
+                {{ residente.nro_departamento }} - {{ residente.Nombre }} {{ residente.ApePat }}
+              </option>
+            </select>
+          </div>
+  
+          <!-- Tabla de gastos filtrados -->
+          <div v-if="gastosFiltrados.length">
+            <h4>Gastos para el Depto {{ departamentoSeleccionado }}</h4>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Mes</th>
+                  <th>Año</th>
+                  <th>Valor</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="gasto in gastosFiltrados" :key="gasto._id">
+                  <td>{{ gasto.mes }}</td>
+                  <td>{{ gasto.anio }}</td>
+                  <td>${{ gasto.valor }}</td>
+                  <td>{{ gasto.estado_pago ? 'Pagado' : 'Pendiente' }}</td>
+                  <td>
+                    <button 
+                      v-if="!gasto.estado_pago"
+                      class="btn btn-success btn-sm"
+                      @click="pagarGasto(gasto._id)"
+                    >
+                      Pagar
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Sección de gastos pendientes -->
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3>Lista de Gastos Comunes Pendientes</h3>
+          <button class="btn btn-primary" @click="generarInformeJSON">
+            Generar Informe JSON
+          </button>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Mes</th>
+                <th>Año</th>
+                <th>Valor</th>
+                <th>Departamento</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="gasto in gastosPendientes" :key="gasto._id">
+                <td>{{ gasto.mes }}</td>
+                <td>{{ gasto.anio }}</td>
+                <td>${{ gasto.valor }}</td>
+                <td>{{ gasto.nro_departamento }}</td>
+                <td>Pendiente</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </template>
+  
+  <script>
+  import axios from 'axios';
+  
+  export default {
+    data() {
+      return {
+        meses: [
+          'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ],
+        gastoForm: {
+          mes: '',
+          anio: new Date().getFullYear(),
+          valor: '',
+          nro_departamento: ''
+        },
+        residentes: [],
+        gastos: [],
+        gastosPendientes: [],
+        departamentoSeleccionado: '',
+        gastosFiltrados: []
+      };
+    },
+    
+    mounted() {
+      this.cargarResidentes();
+      this.cargarGastos();
+      this.cargarGastosPendientes();
+    },
+  
+    methods: {
+      async cargarResidentes() {
+        try {
+          const response = await axios.get('http://localhost:5000/residentes');
+          this.residentes = response.data;
+        } catch (error) {
+          console.error('Error al cargar residentes:', error);
+        }
+      },
+  
+      async cargarGastos() {
+        try {
+          const response = await axios.get('http://localhost:5000/gastos-comunes');
+          this.gastos = response.data;
+          this.filtrarGastos();
+        } catch (error) {
+          console.error('Error al cargar gastos:', error);
+        }
+      },
+  
+      async cargarGastosPendientes() {
+        try {
+          const response = await axios.get('http://localhost:5000/gastos-comunes/pendientes');
+          this.gastosPendientes = response.data;
+        } catch (error) {
+          console.error('Error al cargar gastos pendientes:', error);
+        }
+      },
+  
+      async generarGastoComun() {
+        try {
+          await axios.post('http://localhost:5000/gastos-comunes', this.gastoForm);
+          alert('Gasto común generado exitosamente');
+          this.cargarGastos();
+          this.cargarGastosPendientes();
+          // Resetear formulario
+          this.gastoForm = {
+            mes: '',
+            anio: new Date().getFullYear(),
+            valor: '',
+            nro_departamento: ''
+          };
+        } catch (error) {
+          console.error('Error al generar gasto común:', error);
+          alert('Error al generar gasto común');
+        }
+      },
+  
+      filtrarGastos() {
+        if (this.departamentoSeleccionado) {
+          this.gastosFiltrados = this.gastos.filter(
+            gasto => gasto.nro_departamento === this.departamentoSeleccionado
+          );
+        } else {
+          this.gastosFiltrados = this.gastos;
+        }
+      },
+  
+      async pagarGasto(id) {
+        try {
+          await axios.put(`http://localhost:5000/gastos-comunes/${id}`, {
+            estado_pago: true
+          });
+          alert('Gasto marcado como pagado');
+          this.cargarGastos();
+          this.cargarGastosPendientes();
+        } catch (error) {
+          console.error('Error al pagar gasto:', error);
+          alert('Error al actualizar el estado del pago');
+        }
+      },
+  
+      generarInformeJSON() {
+        const jsonData = JSON.stringify(this.gastosPendientes, null, 2);
+        const blob = new Blob([jsonData], { type: 'application/json' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'gastos-pendientes.json';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+    }
+  };
+  </script>
+  
+  <style scoped>
+  .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+  }
+  
+  .card {
+      margin-bottom: 20px;
+  }
+  
+  .table {
+      margin-top: 20px;
+  }
+  
+  /* H1 en blanco */
+  h1, .text-center.my-4 {
+      color: #ffffff;
+ 
+  }
+  
+  /* Demás títulos en gris oscuro */
+  h2, h3, h4, .card-header h3 {
+      color: #333333;
+      font-family: 'GaretBook', sans-serif;
+  }
+  
+  .card-header {
+      background-color: #f8f9fa;
+  }
+  
+  .card-header h3 {
+      color: #333333;
+      margin-bottom: 0;
+  }
+  </style>

@@ -1,0 +1,176 @@
+/* Estilos generales para el tema oscuro */
+body {
+    background-color: #121212; /* Fondo oscuro */
+    color: #e0e0e0; /* Texto claro */
+}
+
+/* Definir las fuentes Garet-Book y GaretHeavy */
+@font-face {
+    font-family: 'GaretBook';
+    src: url('./fonts/GaretBook.ttf') format('truetype'); /* Ruta relativa */
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GaretHeavy';
+    src: url('./fonts/GaretHeavy.ttf') format('truetype'); /* Ruta relativa */
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Aplicar GaretBook para los títulos y textos principales */
+h2, h3, .sidebar-title, .nav-link, .navbar .navbar-brand {
+    font-family: 'GaretBook', sans-serif; /* Aplicar GaretBook */
+    color: #e0e0e0; /* Color de texto claro */
+}
+
+/* Estilos para la Navbar */
+.navbar {
+    background-color: #333; /* Fondo oscuro de la navbar */
+    color: #fff; /* Texto blanco en la navbar */
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.navbar a {
+    color: #fff !important; /* Enlaces de la navbar en blanco */
+}
+
+.navbar a:hover {
+    color: #bb86fc !important; /* Color al pasar el mouse */
+}
+
+/* Estilos para la Sidebar */
+.sidebar {
+    background-color: #343a40; /* Fondo oscuro de la sidebar */
+    color: white; /* Texto blanco */
+    padding: 20px;
+    width: 230px; /* Ancho de la sidebar */
+    height: 100vh; /* Altura completa */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: fixed;
+    top: 40px; /* Ajuste debajo del navbar */
+    left: 0; /* Fijar al lado izquierdo */
+    z-index: 100;
+}
+
+/* Estilo para el título de la sidebar */
+.sidebar-title {
+    color: #ccc;
+    font-family: 'GaretBook', sans-serif; /* Título con GaretBook */
+    font-size: 16px; /* Tamaño de fuente reducido */
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+/* Estilo para los enlaces de la sidebar */
+.nav-link {
+    color: white;
+    padding: 13px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'GaretBook', sans-serif; /* Aplicar GaretBook a los enlaces */
+    font-size: 14px; /* Tamaño de fuente reducido */
+}
+
+/* Espaciado entre el icono y el texto */
+.nav-link i {
+    margin-right: 10px;
+}
+
+/* Efecto hover: cambia el color de fondo y resalta */
+.nav-link:hover {
+    background-color: #495057; /* Fondo más claro al pasar el mouse */
+    color: #bb86fc; /* Color del texto al pasar el mouse */
+    border-radius: 5px;
+}
+
+/* Estilo para la opción seleccionada (activo) */
+.nav-link.active {
+    background-color: #2f353b; /* Fondo más oscuro para la opción seleccionada */
+    color: #bb86fc; /* Color del texto para la opción seleccionada */
+}
+
+/* Ajuste de espaciado de la lista */
+ul.nav {
+    padding-top: 25px; /* Añadir más espacio entre el título y las opciones */
+}
+
+/* Opciones deshabilitadas (si es necesario) */
+.nav-link.disabled {
+    color: #666; /* Color gris para las opciones deshabilitadas */
+    pointer-events: none; /* Evitar que se pueda hacer clic */
+}
+
+/* Estilos adicionales para el sidebar (opcional) */
+.sidebar a {
+    color: #2bf787a2; /* Enlaces de la sidebar */
+}
+
+.sidebar a:hover {
+    color: #2bf787; /* Color de los enlaces al pasar el mouse */
+}
+
+/* Opciones de búsqueda */
+input[type="text"] {
+    background-color: #333; /* Fondo oscuro en el input de búsqueda */
+    color: #fff; /* Texto blanco */
+    border: 1px solid #444; /* Borde del input */
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    font-family: 'GaretBook', sans-serif; /* Aplicar GaretBook al campo de búsqueda */
+    font-size: 14px; /* Tamaño de fuente reducido */
+    padding-left: 10px; /* Espacio al lado izquierdo del campo de búsqueda */
+}
+
+input[type="text"]:hover {
+    border-color: #bb86fc; /* Color del borde al pasar el mouse */
+    background-color: #444; /* Fondo ligeramente más claro */
+}
+
+input[type="text"]:focus {
+    border-color: #bb86fc; /* Borde al hacer focus */
+    background-color: #444; /* Fondo más claro */
+    color: #fff; /* Texto blanco */
+}
+
+input[type="text"]::placeholder {
+    color: #fff; /* Texto blanco para el placeholder */
+}
+
+/* Estilo para los íconos de notificación y mensaje en la navbar */
+.navbar .bi {
+    font-size: 1.5rem; /* Ajustar el tamaño de los íconos */
+    cursor: pointer;
+    margin-left: 15px; /* Separación entre los íconos */
+    transition: color 0.3s ease; /* Transición suave en los íconos */
+}
+
+/* Efecto hover para los íconos en la navbar */
+.navbar .bi:hover {
+    color: #bb86fc; /* Color al pasar el mouse */
+}
+
+/* Sección de los íconos y el campo de búsqueda (a la derecha) */
+.navbar .navbar-right {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Empuja esta sección a la derecha */
+    margin-right: 20px; /* Separa los íconos y el campo de búsqueda del borde derecho */
+}
+
+
+
+/* Asegurarse de que los gráficos tengan un fondo claro y legible */
+.estadisticas-graph {
+    background-color: #ffffff !important; /* Fondo blanco para los gráficos */
+  }
+  
