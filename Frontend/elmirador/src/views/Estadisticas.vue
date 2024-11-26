@@ -1,67 +1,37 @@
+<!-- src/views/Estadistica.vue -->
 <template>
   <div>
-    <h3>Estadisticas</h3>
-    <!-- Usando el componente Line aquí -->
-    <Line :data="chartData" :options="chartOptions" />
+    <h2>Vista de Estadísticas</h2>
+    <PageGraficoGastos />
+    <PageGraficoGeneral />
+    <PageGraficoPagos/>
+    <PageGraficoReclamos />
+    <PageGraficoResidentes/>
+     <!-- Aquí usamos el componente PageGraficoGastos -->
   </div>
 </template>
 
 <script>
-import { Line } from 'vue-chartjs';
-import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale } from 'chart.js';
 
-// Registra los componentes de Chart.js
-ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale);
+import PageGraficoGastos from '@/components/GraficoGastos.vue'
+import PageGraficoGeneral from '@/components/GraficoGeneral.vue'
+import PageGraficoPagos from '@/components/GraficoPagos.vue'
+import PageGraficoReclamos from '@/components/GraficoReclamos.vue'
+import PageGraficoResidentes from '@/components/GraficoResidentes.vue'
 
 export default {
-  name: "PageEstadisticas",
+  name: 'PageEstadistica',
   components: {
-    Line // Ahora el componente Line es utilizado
-  },
-  data() {
-    return {
-      chartData: {
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
-        datasets: [
-          {
-            label: 'Datos de Gestión',
-            data: [10, 20, 30, 40, 50],
-            borderColor: ['#32CD32'], // Verde
-            backgroundColor: ['rgba(50, 205, 50, 0.2)'],
-            fill: true,
-            tension: 0.4
-          },
-          {
-            label: 'Datos Adicionales',
-            data: [15, 25, 35, 45, 55],
-            borderColor: ['#800080'], // Morado
-            backgroundColor: ['rgba(128, 0, 128, 0.2)'],
-            fill: true,
-            tension: 0.4
-          }
-        ]
-      },
-      chartOptions: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Gráfico de Gestión Personal'
-          },
-          tooltip: {
-            mode: 'index',
-            intersect: false
-          }
-        }
-      }
-    };
+    PageGraficoGastos ,
+    PageGraficoGeneral,
+    PageGraficoPagos,
+    PageGraficoReclamos,
+    PageGraficoResidentes,
+     // Registra el componente correctamente
   }
-};
+}
 </script>
 
 <style scoped>
-canvas {
-  display: block;
-  margin: 0 auto;
-}
+/* Estilos para la vista estadística */
 </style>

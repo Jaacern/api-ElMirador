@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from config.config import app, mongo
-from models.models import Departamento, Residente, GastoComun
+from models.models import Departamento, Residente, GastoComun,Reclamo
 from bson import ObjectId
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -376,6 +376,165 @@ def get_gastos_pendientes():
     return jsonify([GastoComun.to_json(gasto) for gasto in gastos]), 200
 
 
+# Crear un nuevo reclamo
+@app.route('/reclamos', methods=['POST'])
+def crear_reclamo():
+    try:
+        # Obtener datos del request
+        data = request.json
+        
+        # Validaciones básicas
+        if not data.get('titulo') or not data.get('categoria'):
+            return jsonify({"error": "Título y categoría son obligatorios"}), 400
+        
+        # Establecer estado por defecto si no se proporciona
+        data['estado'] = data.get('estado', 'Activo')
+        
+        # Insertar en la base de datos
+        resultado = mongo.db.reclamos.insert_one(data)
+        
+        # Obtener el reclamo insertado
+        reclamo_insertado = mongo.db.reclamos.find_one({"_id": resultado.inserted_id})
+        
+        return jsonify(Reclamo.to_json(reclamo_insertado)), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
+# Obtener todos los reclamos
+@app.route('/reclamos', methods=['GET'])
+def obtener_reclamos():
+    try:
+        # Obtener parámetros de filtrado opcionales
+        estado = request.args.get('estado')
+        categoria = request.args.get('categoria')
+        urgencia = request.args.get('urgencia')
+        
+        # Construir filtro
+        filtro = {}
+        if estado:
+            filtro['estado'] = estado
+        if categoria:
+            filtro['categoria'] = categoria
+        if urgencia:
+            filtro['urgencia'] = urgencia
+        
+        # Obtener reclamos con filtro
+        reclamos = mongo.db.reclamos.find(filtro)
+        
+        return jsonify([Reclamo.to_json(reclamo) for reclamo in reclamos]), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
+# Obtener un reclamo específico por ID
+@app.route('/reclamos/<id>', methods=['GET'])
+def obtener_reclamo(id):
+    try:
+        # Convertir ID a ObjectId
+        reclamo_id = ObjectId(id)
+        
+        # Buscar reclamo
+        reclamo = mongo.db.reclamos.find_one({"_id": reclamo_id})
+        
+        if not reclamo:
+            return jsonify({"error": "Reclamo no encontrado"}), 404
+        
+        return jsonify(Reclamo.to_json(reclamo)), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Actualizar un reclamo
+@app.route('/reclamos/<id>', methods=['PUT'])
+def actualizar_reclamo(id):
+    try:
+        # Convertir ID a ObjectId
+        reclamo_id = ObjectId(id)
+        
+        # Obtener datos de actualización
+        data = request.json
+        
+        # Eliminar el _id si está en los datos de actualización
+        data.pop('_id', None)
+        
+        # Actualizar reclamo
+        resultado = mongo.db.reclamos.update_one(
+            {"_id": reclamo_id},
+            {"$set": data}
+        )
+        
+        if resultado.modified_count == 0:
+            return jsonify({"error": "Reclamo no encontrado o sin cambios"}), 404
+        
+        # Obtener reclamo actualizado
+        reclamo_actualizado = mongo.db.reclamos.find_one({"_id": reclamo_id})
+        
+        return jsonify(Reclamo.to_json(reclamo_actualizado)), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Eliminar un reclamo
+@app.route('/reclamos/<id>', methods=['DELETE'])
+def eliminar_reclamo(id):
+    try:
+        # Convertir ID a ObjectId
+        reclamo_id = ObjectId(id)
+        
+        # Eliminar reclamo
+        resultado = mongo.db.reclamos.delete_one({"_id": reclamo_id})
+        
+        if resultado.deleted_count == 0:
+            return jsonify({"error": "Reclamo no encontrado"}), 404
+        
+        return jsonify({"mensaje": "Reclamo eliminado exitosamente"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Cambiar estado de un reclamo
+@app.route('/reclamos/<id>/estado', methods=['PATCH'])
+def cambiar_estado_reclamo(id):
+    try:
+        # Convertir ID a ObjectId
+        reclamo_id = ObjectId(id)
+        
+        # Obtener nuevo estado
+        nuevo_estado = request.json.get('estado')
+        
+        # Validar estado
+        if nuevo_estado not in ['Activo', 'Inactivo']:
+            return jsonify({"error": "Estado inválido"}), 400
+        
+        # Actualizar estado
+        resultado = mongo.db.reclamos.update_one(
+            {"_id": reclamo_id},
+            {"$set": {"estado": nuevo_estado}}
+        )
+        
+        if resultado.modified_count == 0:
+            return jsonify({"error": "Reclamo no encontrado"}), 404
+        
+        # Obtener reclamo actualizado
+        reclamo_actualizado = mongo.db.reclamos.find_one({"_id": reclamo_id})
+        
+        return jsonify(Reclamo.to_json(reclamo_actualizado)), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Filtrar reclamos por estado
+@app.route('/reclamos/filtrar/estado', methods=['GET'])
+def filtrar_reclamos_por_estado():
+    try:
+        estado = request.args.get('estado', 'Activo')
+        
+        # Validar estado
+        if estado not in ['Activo', 'Inactivo']:
+            return jsonify({"error": "Estado inválido"}), 400
+        
+        # Filtrar reclamos
+        reclamos = mongo.db.reclamos.find({"estado": estado})
+        
+        return jsonify([Reclamo.to_json(reclamo) for reclamo in reclamos]), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
 

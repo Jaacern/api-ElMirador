@@ -83,6 +83,23 @@ class GastoComun:
             "nro_departamento": gasto.get("nro_departamento"),
             "estado_pago": gasto.get("estado_pago", False)
         }
-    
+  
 
-    
+
+class Reclamo:
+    @staticmethod
+    def to_json(reclamo):
+        return {
+            "_id": str(reclamo.get("_id", "")),
+            "titulo": reclamo.get("titulo"),
+            "categoria": reclamo.get("categoria"),
+            "descripcion": reclamo.get("descripcion"),
+            "ubicacion": reclamo.get("ubicacion"),
+            "archivos": reclamo.get("archivos", []),
+            "nombre": reclamo.get("nombre"),
+            "correo": reclamo.get("correo"),
+            "telefono": reclamo.get("telefono"),
+            "fecha": reclamo.get("fecha"),
+            "urgencia": reclamo.get("urgencia"),
+            "estado": reclamo.get("estado", "Activo")
+        }
