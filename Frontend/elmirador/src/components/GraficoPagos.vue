@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Gráfico Pagos - Neón</h1>
+    <h1>Gráfico Pagos</h1>
     <canvas ref="myDoughnutChart"></canvas> <!-- El canvas donde se renderizará el gráfico -->
   </div>
 </template>

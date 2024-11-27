@@ -1,3 +1,4 @@
+
 <template>
   <div class="container-fluid p-4">
     <h1 class="text-center mb-4">
@@ -196,6 +197,7 @@
 
 <script>
 import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
   // El código del script permanece exactamente igual al original
@@ -223,12 +225,14 @@ export default {
     this.mostrarResidentess();
   },
   methods: {
+    ...mapActions(['updateResidentesCount']),
     async mostrarResidentess() {
       try {
         const response = await axios.get('http://localhost:5000/residentes');
         this.residentes = response.data;
         this.showResidentList = true;
         this.showForm = false;
+        this.updateResidentesCount(this.residentes.length); // Actualiza el estado global
       } catch (error) {
         console.error('Error al obtener los residentes:', error);
       }
