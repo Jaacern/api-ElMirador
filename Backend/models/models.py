@@ -69,6 +69,25 @@ class Residente:
      
 
 
+# Clase Personal
+class Personal:
+    @staticmethod
+    def to_json(personal):
+        return {
+            "_id": str(personal.get("_id", "")),
+            "RutPersonal": personal.get("RutPersonal"),
+            "Nombre": personal.get("Nombre"),
+            "ApePat": personal.get("ApePat"),
+            "ApeMat": personal.get("ApeMat"),
+            "Email": personal.get("Email"),
+            "Fono1": personal.get("Fono1"),
+            "Fono2": personal.get("Fono2"),
+            "Estado": personal.get("Estado"),
+            "Cargo": personal.get("Cargo"),
+            "HoraInicioJ": personal.get("HoraInicioJ"),
+            "HoraFinJ": personal.get("HoraFinJ"),
+        }
+
 
 
 # Clase GastoComun

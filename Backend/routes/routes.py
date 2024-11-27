@@ -1,10 +1,13 @@
 from flask import jsonify, request
 from config.config import app, mongo
-from models.models import Departamento, Residente, GastoComun,Reclamo
+from models.models import Departamento, Residente, GastoComun,Reclamo, Personal
 from bson import ObjectId
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+
+
+##############DEPARTAMENTOS##############
 
 @app.route('/departamentos', methods=['POST'])
 def create_departamento():
@@ -77,6 +80,12 @@ def delete_departamento(cod_depto):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+#########################################
+
+
+
+##############ACCESOS###################
+
 
 @app.route('/accesos', methods=['POST'])
 def create_acceso():
@@ -152,6 +161,15 @@ def delete_acceso(username):
         return jsonify({"error": "Acceso no encontrado"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+    
+#########################################
+
+
+
+    
+################CUOTAS##################
 
 # Rutas para CuotaGC
 @app.route('/cuotas', methods=['POST'])
@@ -229,8 +247,13 @@ def delete_cuota(id_cuota):
         return jsonify({"error": str(e)}), 500
     
 
+    
+#########################################
 
 
+
+    
+############RESIDENTES###################
 
 
 # Ruta para crear un nuevo Residente (POST)
@@ -313,7 +336,94 @@ def delete_residente(id):
 
 
 
+    
+#########################################
 
+
+############## PERSONAL ##############
+
+# Crear un nuevo personal
+@app.route('/personal', methods=['POST'])
+def create_personal():
+    try:
+        data = request.json
+        if data:
+            # Validar que el RutPersonal no exista
+            if mongo.db.personal.find_one({"RutPersonal": data["RutPersonal"]}):
+                return jsonify({"error": "RutPersonal ya existe"}), 400
+            
+            # Convertir horas de string a formato apropiado si existen
+            if "HoraInicioJ" in data and data["HoraInicioJ"]:
+                data["HoraInicioJ"] = datetime.strptime(data["HoraInicioJ"], "%H:%M").time()
+            if "HoraFinJ" in data and data["HoraFinJ"]:
+                data["HoraFinJ"] = datetime.strptime(data["HoraFinJ"], "%H:%M").time()
+            
+            result = mongo.db.personal.insert_one(data)
+            return jsonify({"message": "Personal creado exitosamente", "id": str(result.inserted_id)}), 201
+        return jsonify({"error": "Datos inválidos"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# Obtener lista de todo el personal
+@app.route('/personal', methods=['GET'])
+def get_personal():
+    try:
+        personal_list = mongo.db.personal.find()
+        return jsonify([Personal.to_json(personal) for personal in personal_list]), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# Obtener un personal por su ID
+@app.route('/personal/<string:id>', methods=['GET'])
+def get_personal_by_id(id):
+    try:
+        personal = mongo.db.personal.find_one({"_id": ObjectId(id)})
+        if not personal:
+            return jsonify({"error": "Personal no encontrado"}), 404
+        return jsonify(Personal.to_json(personal)), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# Actualizar un personal existente
+@app.route('/personal/<string:id>', methods=['PUT'])
+def update_personal(id):
+    try:
+        data = request.json
+        if data:
+            # Convertir horas de string a formato apropiado si existen
+            if "HoraInicioJ" in data and data["HoraInicioJ"]:
+                data["HoraInicioJ"] = datetime.strptime(data["HoraInicioJ"], "%H:%M").time()
+            if "HoraFinJ" in data and data["HoraFinJ"]:
+                data["HoraFinJ"] = datetime.strptime(data["HoraFinJ"], "%H:%M").time()
+            
+            result = mongo.db.personal.update_one({"_id": ObjectId(id)}, {"$set": data})
+            if result.matched_count == 0:
+                return jsonify({"error": "Personal no encontrado"}), 404
+            return jsonify({"message": "Personal actualizado exitosamente"}), 200
+        return jsonify({"error": "Datos inválidos"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# Eliminar un personal
+@app.route('/personal/<string:id>', methods=['DELETE'])
+def delete_personal(id):
+    try:
+        result = mongo.db.personal.delete_one({"_id": ObjectId(id)})
+        if result.deleted_count == 0:
+            return jsonify({"error": "Personal no encontrado"}), 404
+        return jsonify({"message": "Personal eliminado exitosamente"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+
+
+##$########GASTOS COMUNES################
 
 
 
@@ -375,6 +485,13 @@ def get_gastos_pendientes():
     gastos = mongo.db.gastos_comunes.find({"estado_pago": False})
     return jsonify([GastoComun.to_json(gasto) for gasto in gastos]), 200
 
+    
+#########################################
+
+
+
+    
+#############RECLAMOS####################
 
 # Crear un nuevo reclamo
 @app.route('/reclamos', methods=['POST'])
@@ -537,4 +654,6 @@ def filtrar_reclamos_por_estado():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
 
