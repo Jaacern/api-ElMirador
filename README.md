@@ -30,7 +30,7 @@ Sistema fullstack para administración de residentes y gastos comunes, diseñado
 #### Backend
 ```bash
 # Clonar repositorio
-git clone https://github.com/tu-usuario/ResidentePro.git
+git clone https://github.com/Jaacern/api-ElMirador
 cd ResidentePro
 
 # Crear entorno virtual
