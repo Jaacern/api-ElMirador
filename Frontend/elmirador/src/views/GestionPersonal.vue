@@ -19,7 +19,7 @@
     </div>
 <!-- Lista de Personal -->
 <div v-if="showPersonalList" class="card shadow-sm">
-  <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+  <div class="card-header custom-header text-white d-flex justify-content-between align-items-center">
     <h4 class="mb-0">
       <i class="bi bi-list-check me-2"></i>Lista de Personal
     </h4>
@@ -87,7 +87,7 @@
 
     <!-- Formulario de Personal -->
     <div v-if="showForm" class="card shadow-sm mt-4">
-      <div class="card-header bg-primary text-white">
+      <div class="card-header custom-header text-white">
         <h4 class="mb-0">
           <i class="bi bi-plus-square me-2"></i>
           {{ editMode ? 'Editar Personal' : 'Nuevo Personal' }}
@@ -158,6 +158,7 @@
               />
             </div>
             <div class="col-md-6 mb-3">
+              
   <label for="cargo" class="form-label">Cargo</label>
   <select 
     v-model="personalForm.Cargo" 
@@ -210,6 +211,7 @@ export default {
         ApeMat: '',
         Email: '',
         Cargo: '',
+        Fono1: '',
         Estado: 'Inactivo', 
       },
       showPersonalList: false,
@@ -344,6 +346,10 @@ export default {
 }
 .table-responsive {
   overflow-x: auto;
+}
+.custom-header {
+  background-color: #008E63;
+  color: white;
 }
 
 </style>

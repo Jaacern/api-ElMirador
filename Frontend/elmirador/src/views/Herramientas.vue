@@ -186,6 +186,6 @@ export default {
 }
 
 h1 i {
-  color: #007bff;
+  color: #598dc5;
 }
 </style>

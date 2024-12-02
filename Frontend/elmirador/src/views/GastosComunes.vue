@@ -6,7 +6,7 @@
 
     <!-- Generar Gasto Común Card -->
     <div class="card shadow-sm mb-4">
-      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <div class="card-header custom-header text-white d-flex justify-content-between align-items-center">
         <h4 class="mb-0">
           <i class="bi bi-plus-square me-2"></i>Generar Gasto Común
         </h4>
@@ -51,10 +51,17 @@
     </div>
 
     <div class="card shadow-sm">
-      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <div class="card-header custom-header text-white d-flex justify-content-between align-items-center">
         <h4 class="mb-0">
           <i class="bi bi-list-check me-2"></i>Lista de Gastos Comunes
         </h4>
+        <button 
+      v-if="gastosFiltrados.length > 0" 
+      class="btn btn-success btn-sm me-2" 
+      @click="pagarAnoCompleto"
+    >
+      <i class="bi bi-calendar-check me-1"></i>Pagar Año Completo
+    </button>
         <span class="badge bg-light text-dark">Total: {{ gastosFiltrados.length }}</span>
       </div>
       <div class="card-body">
@@ -143,7 +150,7 @@
 
       <!-- Gastos Pendientes -->
       <div class="card shadow-sm mt-4">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <div class="card-header custom-header text-white d-flex justify-content-between align-items-center">
           <h4 class="mb-0">
             <i class="bi bi-clock-history me-2"></i>Gastos Comunes Pendientes
           </h4>
@@ -188,7 +195,7 @@ export default {
     return {
       meses: [
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre', 'Año completo',
       ],
       gastoForm: {
         mes: '',
@@ -323,23 +330,91 @@ export default {
     },
 
     async generarGastoComun() {
-      try {
-        await axios.post('http://localhost:5000/gastos-comunes', this.gastoForm);
-        alert('Gasto común generado exitosamente');
-        this.cargarGastos();
-        this.cargarGastosPendientes();
-        // Resetear formulario
-        this.gastoForm = {
-          mes: '',
-          anio: new Date().getFullYear(),
-          valor: '',
-          nro_departamento: ''
-        };
-      } catch (error) {
-        console.error('Error al generar gasto común:', error);
-        alert('Error al generar gasto común');
+  try {
+    // Si el mes seleccionado es "Año completo"
+    if (this.gastoForm.mes === 'Año completo') {
+      // Generar gastos para todos los meses del año
+      const mesesAGenerar = this.meses.slice(0, 12); // Excluye "Año completo"
+      
+      for (const mes of mesesAGenerar) {
+        const gastoExistente = this.gastos.find(gasto => 
+          gasto.mes === mes && 
+          gasto.anio === this.gastoForm.anio && 
+          gasto.nro_departamento === this.gastoForm.nro_departamento
+        );
+
+        if (!gastoExistente) {
+          await axios.post('http://localhost:5000/gastos-comunes', {
+            ...this.gastoForm,
+            mes: mes
+          });
+        }
       }
-    },
+
+      alert('Gastos comunes generados para todo el año');
+    } else {
+      // Lógica existente para un mes específico
+      const gastoExistente = this.gastos.find(gasto => 
+        gasto.mes === this.gastoForm.mes && 
+        gasto.anio === this.gastoForm.anio && 
+        gasto.nro_departamento === this.gastoForm.nro_departamento
+      );
+
+      if (gastoExistente) {
+        alert('Ya existe un gasto común para este departamento en el mes y año seleccionados');
+        return;
+      }
+
+      await axios.post('http://localhost:5000/gastos-comunes', this.gastoForm);
+      alert('Gasto común generado exitosamente');
+    }
+
+    // Recargar y resetear
+    this.cargarGastos();
+    this.cargarGastosPendientes();
+    this.gastoForm = {
+      mes: '',
+      anio: new Date().getFullYear(),
+      valor: '',
+      nro_departamento: ''
+    };
+  } catch (error) {
+    console.error('Error al generar gasto común:', error);
+    alert('Error al generar gasto común');
+  }
+},
+async pagarAnoCompleto() {
+  // Verificar si hay un año seleccionado en los filtros
+  const anioAPagar = this.filtros.anio || new Date().getFullYear();
+  
+  // Filtrar gastos pendientes del año seleccionado
+  const gastosPendientesPorPagar = this.gastosFiltrados.filter(
+    gasto => !gasto.estado_pago && gasto.anio === anioAPagar
+  );
+
+  if (gastosPendientesPorPagar.length === 0) {
+    alert('No hay gastos pendientes para pagar en este año');
+    return;
+  }
+
+  try {
+    // Pagar cada gasto pendiente
+    for (const gasto of gastosPendientesPorPagar) {
+      await axios.put(`http://localhost:5000/gastos-comunes/${gasto._id}`, {
+        estado_pago: true
+      });
+    }
+
+    alert(`Todos los gastos de ${anioAPagar} han sido marcados como pagados`);
+    
+    // Recargar la lista de gastos
+    this.cargarGastos();
+    this.cargarGastosPendientes();
+  } catch (error) {
+    console.error('Error al pagar año completo:', error);
+    alert('Hubo un error al intentar pagar todos los gastos');
+  }
+},
 
     async pagarGasto(id) {
       try {
@@ -354,6 +429,8 @@ export default {
         alert('Error al actualizar el estado del pago');
       }
     },
+
+    
 
     generarInformeJSON() {
       const jsonData = JSON.stringify(this.gastosPendientes, null, 2);
@@ -392,5 +469,10 @@ export default {
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
+}
+
+.custom-header {
+  background-color: #008E63;
+  color: white;
 }
 </style>

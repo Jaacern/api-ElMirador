@@ -36,7 +36,7 @@
 
     <!-- Lista de Reclamos -->
     <div v-if="showReclamosList" class="card shadow-sm">
-      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <div class="card-header custom-header text-white d-flex justify-content-between align-items-center">
         <h4 class="mb-0">
           <i class="bi bi-list-check me-2"></i>Lista de Reclamos
         </h4>
@@ -133,7 +133,7 @@
 
     <!-- Formulario de Reclamos -->
     <div v-if="showForm" class="card shadow-sm mt-4">
-      <div class="card-header bg-primary text-white">
+      <div class="card-header custom-header text-white">
         <h4 class="mb-0">
           <i class="bi bi-plus-square me-2"></i>
           {{ editMode ? 'Editar Reclamo' : 'Nuevo Reclamo' }}
@@ -507,5 +507,9 @@ export default {
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
+}
+.custom-header {
+  background-color: #008E63;
+  color: white;
 }
 </style>

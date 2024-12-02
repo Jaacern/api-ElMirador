@@ -20,8 +20,11 @@
     </div>
 
     <!-- Lista de Residentes -->
+     
     <div v-if="showResidentList" class="card shadow-sm">
-      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <!-- <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center"> -->
+        <div class="card-header custom-bg-color text-white d-flex justify-content-between align-items-center">
+
         <h4 class="mb-0">
           <i class="bi bi-list-check me-2"></i>Lista de Residentes
         </h4>
@@ -74,7 +77,8 @@
 
     <!-- Formulario de Residentes -->
     <div v-if="showForm" class="card shadow-sm mt-4">
-      <div class="card-header bg-primary text-white">
+      
+      <div class="card-header custom-bg-color text-white">
         <h4 class="mb-0">
           <i class="bi bi-plus-square me-2"></i>
           {{ editMode ? 'Editar Residente' : 'Nuevo Residente' }}
@@ -288,7 +292,7 @@ export default {
     },
 
     async eliminarResidente(id) {
-      if (confirm('¿Estás seguro de eliminar este residente?')) {
+      if (confirm('¿Estás seguro de eliminar este residente?')) {3
         try {
           const response = await axios.delete(`http://localhost:5000/residentes/${id}`);
           console.log('Residente eliminado:', response.data);
@@ -345,7 +349,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  
+  
 }
+
 
 /* Transiciones suaves */
 .fade-enter-active, .fade-leave-active {
@@ -354,4 +361,9 @@ export default {
 .fade-enter, .fade-leave-to {
   opacity: 0;
 }
+
+.custom-bg-color {
+  background-color: #008E63 /* Cambia este color por el que prefieras */
+}
+
 </style>

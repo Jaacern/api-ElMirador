@@ -54,7 +54,7 @@
     <div class="row">
       <div class="col-md-6 mb-4">
         <div class="card shadow-sm h-100">
-          <div class="card-header bg-primary text-white">
+          <div class="card-header custom-header text-white">
             <h4 class="mb-0"><i class="bi bi-pie-chart me-2"></i>Gráfico Gastos</h4>
           </div>
           <div class="card-body">
@@ -64,7 +64,7 @@
       </div>
       <div class="col-md-6 mb-4">
         <div class="card shadow-sm h-100">
-          <div class="card-header bg-primary text-white">
+          <div class="card-header custom-header text-white">
             <h4 class="mb-0"><i class="bi bi-flag me-2"></i>Gráfico Reclamos</h4>
           </div>
           <div class="card-body">
@@ -77,7 +77,7 @@
     <div class="row">
       <div class="col-md-6 mb-4">
         <div class="card shadow-sm h-100">
-          <div class="card-header bg-primary text-white">
+          <div class="card-header custom-header text-white">
             <h4 class="mb-0"><i class="bi bi-cash-coin me-2"></i>Gráfico Pagos</h4>
           </div>
           <div class="card-body">
@@ -87,7 +87,7 @@
       </div>
       <div class="col-md-6 mb-4">
         <div class="card shadow-sm h-100">
-          <div class="card-header bg-primary text-white">
+          <div class="card-header custom-header text-white">
             <h4 class="mb-0"><i class="bi bi-bar-chart-line me-2"></i>Gráfico General</h4>
           </div>
           <div class="card-body">
@@ -100,7 +100,7 @@
     <div class="row">
       <div class="col-md-12 mb-4">
         <div class="card shadow-sm h-100">
-          <div class="card-header bg-primary text-white">
+          <div class="card-header custom-header text-white">
             <h4 class="mb-0"><i class="bi bi-people me-2"></i>Gráfico Residentes</h4>
           </div>
           <div class="card-body">
@@ -148,5 +148,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.custom-header {
+  background-color: #008E63;
+  color: white;
 }
 </style>

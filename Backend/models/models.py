@@ -69,6 +69,7 @@ class Residente:
      
 
 
+
 # Clase Personal
 class Personal:
     @staticmethod
