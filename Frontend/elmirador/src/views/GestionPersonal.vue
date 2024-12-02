@@ -307,7 +307,7 @@ export default {
       ApeMat: '',
       Email: '',
       Cargo: '',
-      Estado: 'Inactivo',  // Estado por defecto cuando se agrega un nuevo personal
+      Estado: 'Inactivo',  // Estado por defecto cuando se agrega un nuevo personalal
     };
     this.editMode = false;
     this.currentPersonalId = null;
@@ -320,7 +320,7 @@ export default {
     this.showForm = false;
   },
   
-  // Cambiar el estado de un personal (Activo o Inactivo)
+  // cCambiar el estado de un personal (Activo o Inactivo)
   async toggleEstado(id, estadoActual) {
     const nuevoEstado = estadoActual === 'Activo' ? 'Inactivo' : 'Activo';
     try {
