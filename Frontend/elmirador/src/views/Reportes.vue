@@ -89,7 +89,7 @@
     <div class="row mb-4">
       <div class="col-12">
         <div class="card shadow-lg">
-          <div class="card-header custom-header">
+          <div class="card-header custom-header reportes">
             <h5 class="mb-0">
               <i class="bi bi-funnel me-2"></i>
               Filtros de Reporte
@@ -142,7 +142,7 @@
     <div class="row" v-if="reporteGenerado">
       <div class="col-12">
         <div class="card shadow-lg">
-          <div class="card-header custom-header d-flex justify-content-between align-items-center">
+          <div class="card-header custom-header reportes d-flex justify-content-between align-items-center">
             <h5 class="mb-0">
               <i class="bi bi-eye me-2"></i>
               Vista Previa del Reporte
@@ -239,7 +239,7 @@
     <div class="row">
       <div class="col-12">
         <div class="card shadow-lg">
-          <div class="card-header custom-header">
+          <div class="card-header custom-header recaudacion">
             <h5 class="mb-0">
               <i class="bi bi-clock-history me-2"></i>
               Historial de Reportes

@@ -37,16 +37,42 @@ body {
   background: white;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-lg);
-  margin: 0;
+  margin: 1rem;
   min-height: calc(100vh - 2rem);
+  padding: 1.5rem;
 }
 
 /* Headers personalizados */
 .custom-header {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  background: linear-gradient(135deg, #475569, #334155);
   border: none;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   padding: 1rem 1.5rem;
+}
+
+/* Headers específicos por contexto */
+.custom-header.residentes {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.custom-header.personal {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.custom-header.gastos {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.custom-header.estadisticas {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.custom-header.reportes {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+}
+
+.custom-header.recaudacion {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
 }
 
 .custom-header h4 {
@@ -129,7 +155,7 @@ body {
 
 .card-header {
   border-bottom: 1px solid var(--border-color);
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  background: linear-gradient(135deg, #475569, #334155);
   color: white;
   font-weight: 600;
 }
@@ -296,7 +322,7 @@ body {
 
 /* Estilos específicos para componentes */
 .stats-card {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
   color: white;
   border-radius: var(--border-radius);
   padding: 1.5rem;

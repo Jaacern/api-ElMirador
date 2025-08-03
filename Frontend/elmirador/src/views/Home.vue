@@ -712,7 +712,7 @@ body {
 }
 
 .feature-card {
-  background: #f8fafc;
+  background: #e2e8f0;
   padding: 2rem;
   border-radius: 20px;
   height: 100%;
@@ -737,7 +737,7 @@ body {
 /* AI Section */
 .ai-section {
   padding: 100px 0;
-  background: #f8fafc;
+  background: #e2e8f0;
   width: 100vw;
   margin: 0;
   overflow-x: hidden;
@@ -1015,7 +1015,7 @@ body {
 /* Collaboration Section */
 .collaboration-section {
   padding: 100px 0;
-  background: white;
+  background: #e2e8f0;
   width: 100vw;
   margin: 0;
   overflow-x: hidden;

@@ -444,13 +444,13 @@ export default {
   display: flex;
   align-items: center;
   padding: 1rem;
-  background: #f8fafc;
+  background: #e2e8f0;
   border-radius: var(--border-radius);
   transition: all 0.2s ease;
 }
 
 .system-stat:hover {
-  background: #f1f5f9;
+  background: #cbd5e1;
   transform: translateY(-2px);
 }
 

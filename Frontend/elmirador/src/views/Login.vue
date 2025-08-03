@@ -109,14 +109,15 @@
       </div>
     </div>
 
-    <!-- Background Elements -->
-    <div class="background-elements">
-      <div class="floating-shape shape-1"></div>
-      <div class="floating-shape shape-2"></div>
-      <div class="floating-shape shape-3"></div>
-      <div class="floating-shape shape-4"></div>
-      <div class="floating-shape shape-5"></div>
-    </div>
+         <!-- Background Elements -->
+     <div class="background-elements">
+       <div class="floating-shape shape-1"></div>
+       <div class="floating-shape shape-2"></div>
+       <div class="floating-shape shape-3"></div>
+       <div class="floating-shape shape-4"></div>
+       <div class="floating-shape shape-5"></div>
+       <div class="floating-shape shape-6"></div>
+     </div>
   </div>
 </template>
 
@@ -209,6 +210,7 @@ export default {
 <style scoped>
 .login-page {
   min-height: 100vh;
+  width: 100vw;
   background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
   display: flex;
   align-items: center;
@@ -216,6 +218,7 @@ export default {
   position: relative;
   overflow: hidden;
   padding: 2rem;
+  margin: 0;
 }
 
 .login-container {
@@ -286,7 +289,7 @@ export default {
 }
 
 .input-group-text {
-  background: #f8fafc;
+  background: #e2e8f0;
   border-color: #e2e8f0;
   color: var(--secondary-color);
 }
@@ -398,7 +401,7 @@ export default {
 }
 
 .btn-outline-secondary:hover {
-  background: #f8fafc;
+  background: #e2e8f0;
   border-color: #cbd5e1;
   color: var(--dark-color);
 }
@@ -406,7 +409,7 @@ export default {
 .demo-credentials {
   margin-top: 2rem;
   padding: 1rem;
-  background: #f8fafc;
+  background: #e2e8f0;
   border-radius: 10px;
   border: 1px solid #e2e8f0;
 }
@@ -442,8 +445,9 @@ export default {
   position: absolute;
   border-radius: 50%;
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(147, 197, 253, 0.1));
-  animation: float 8s ease-in-out infinite;
+  animation: float 12s ease-in-out infinite;
   box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
+  filter: blur(0.5px);
 }
 
 .shape-1 {
@@ -451,6 +455,7 @@ export default {
   height: 120px;
   top: 15%;
   left: 8%;
+  animation: float 15s ease-in-out infinite;
   animation-delay: 0s;
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(147, 197, 253, 0.1));
 }
@@ -460,6 +465,7 @@ export default {
   height: 180px;
   top: 55%;
   right: 12%;
+  animation: float 18s ease-in-out infinite;
   animation-delay: 2s;
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(110, 231, 183, 0.1));
 }
@@ -469,6 +475,7 @@ export default {
   height: 100px;
   bottom: 15%;
   left: 15%;
+  animation: float 10s ease-in-out infinite;
   animation-delay: 4s;
   background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(251, 191, 36, 0.1));
 }
@@ -478,6 +485,7 @@ export default {
   height: 140px;
   top: 35%;
   right: 25%;
+  animation: float 20s ease-in-out infinite;
   animation-delay: 6s;
   background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(252, 165, 165, 0.1));
 }
@@ -487,19 +495,53 @@ export default {
   height: 80px;
   bottom: 35%;
   right: 8%;
+  animation: float 14s ease-in-out infinite;
   animation-delay: 3s;
   background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(196, 181, 253, 0.1));
 }
 
+.shape-6 {
+  width: 160px;
+  height: 160px;
+  top: 25%;
+  right: 5%;
+  animation: breathe 8s ease-in-out infinite;
+  animation-delay: 1s;
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(244, 114, 182, 0.1));
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+}
+
 @keyframes float {
+  0% {
+    transform: translateY(0px) translateX(0px) rotate(0deg) scale(1);
+    opacity: 0.7;
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px) rotate(90deg) scale(1.1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-10px) translateX(-15px) rotate(180deg) scale(0.9);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translateY(-25px) translateX(5px) rotate(270deg) scale(1.05);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(0px) translateX(0px) rotate(360deg) scale(1);
+    opacity: 0.7;
+  }
+}
+
+@keyframes breathe {
   0%, 100% {
-    transform: translateY(0px) rotate(0deg) scale(1);
+    transform: scale(1);
+    opacity: 0.6;
   }
-  33% {
-    transform: translateY(-15px) rotate(120deg) scale(1.05);
-  }
-  66% {
-    transform: translateY(-10px) rotate(240deg) scale(0.95);
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
   }
 }
 

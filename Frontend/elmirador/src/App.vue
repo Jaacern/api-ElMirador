@@ -72,13 +72,33 @@ export default {
 </script>
 
 <style>
+/* Reset global para eliminar espacios no deseados */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100vw;
+}
+
+html {
+  overflow-x: hidden;
+}
+
 /* Estilos base de la aplicación */
 .app-container {
   min-height: 100vh;
+  width: 100vw;
   background: var(--secondary-50);
   font-family: var(--font-family-primary);
   color: var(--secondary-900);
   line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 .app-main {
@@ -158,8 +178,8 @@ export default {
     --secondary-500: #94a3b8;
     --secondary-600: #cbd5e1;
     --secondary-700: #e2e8f0;
-    --secondary-800: #f1f5f9;
-    --secondary-900: #f8fafc;
+      --secondary-800: #f1f5f9;
+  --secondary-900: #e2e8f0;
   }
 }
 

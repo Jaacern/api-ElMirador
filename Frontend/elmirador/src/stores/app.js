@@ -72,8 +72,22 @@ export const useAppStore = defineStore('app', () => {
   };
   
   const logout = () => {
+    // Limpiar usuario actual
     currentUser.value = null;
+    
+    // Limpiar notificaciones
     notifications.value = [];
+    
+    // Limpiar datos del dashboard
+    residentesCount.value = 0;
+    personalCount.value = 0;
+    gastosComunesCount.value = 0;
+    pagosPendientesCount.value = 0;
+    
+    // Limpiar localStorage
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('rememberMe');
   };
   
   const setTheme = (newTheme) => {

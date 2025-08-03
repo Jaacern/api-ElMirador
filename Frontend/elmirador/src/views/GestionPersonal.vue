@@ -72,7 +72,7 @@
 
     <!-- Lista de Personal -->
     <div v-if="showPersonalList" class="card shadow-lg">
-      <div class="card-header custom-header d-flex justify-content-between align-items-center">
+      <div class="card-header custom-header personal d-flex justify-content-between align-items-center">
         <h4 class="mb-0">
           <i class="bi bi-list-check me-2"></i>
           Lista de Personal

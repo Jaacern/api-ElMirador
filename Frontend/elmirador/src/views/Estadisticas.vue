@@ -75,7 +75,7 @@
       <!-- Gráfico de residentes por departamento -->
       <div class="col-md-6 mb-4">
         <div class="card shadow-lg">
-          <div class="card-header custom-header">
+          <div class="card-header custom-header estadisticas">
             <h5 class="mb-0">
               <i class="bi bi-pie-chart me-2"></i>
               Distribución de Residentes
@@ -96,7 +96,7 @@
       <!-- Gráfico de gastos por mes -->
       <div class="col-md-6 mb-4">
         <div class="card shadow-lg">
-          <div class="card-header custom-header">
+          <div class="card-header custom-header estadisticas">
             <h5 class="mb-0">
               <i class="bi bi-bar-chart me-2"></i>
               Gastos por Mes
@@ -116,7 +116,7 @@
       <!-- Top 5 departamentos con más gastos -->
       <div class="col-md-6 mb-4">
         <div class="card shadow-lg">
-          <div class="card-header custom-header">
+          <div class="card-header custom-header estadisticas">
             <h5 class="mb-0">
               <i class="bi bi-trophy me-2"></i>
               Top 5 - Departamentos con Más Gastos
@@ -165,7 +165,7 @@
       <!-- Resumen de personal -->
       <div class="col-md-6 mb-4">
         <div class="card shadow-lg">
-          <div class="card-header custom-header">
+          <div class="card-header custom-header estadisticas">
             <h5 class="mb-0">
               <i class="bi bi-person-badge me-2"></i>
               Resumen del Personal
@@ -210,7 +210,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card shadow-lg">
-          <div class="card-header custom-header">
+          <div class="card-header custom-header recaudacion">
             <h5 class="mb-0">
               <i class="bi bi-info-circle me-2"></i>
               Información Adicional

@@ -72,7 +72,7 @@
 
     <!-- Lista de residentes -->
     <div v-if="showResidentList" class="card shadow-lg">
-      <div class="card-header custom-header d-flex justify-content-between align-items-center">
+      <div class="card-header custom-header residentes d-flex justify-content-between align-items-center">
         <h4 class="card-title">
           <i class="fas fa-list"></i>
           Lista de Residentes

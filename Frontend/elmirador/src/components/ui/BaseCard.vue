@@ -153,7 +153,7 @@ export default {
 .card-header {
   padding: var(--space-6);
   border-bottom: 1px solid var(--secondary-200);
-  background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+  background: linear-gradient(135deg, #475569, #334155);
   flex-shrink: 0;
 }
 
@@ -187,7 +187,7 @@ export default {
 
 /* Variantes */
 .card-primary .card-header {
-  background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+  background: linear-gradient(135deg, #475569, #334155);
 }
 
 .card-primary .card-title {

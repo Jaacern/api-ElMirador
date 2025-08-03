@@ -174,13 +174,14 @@
 
 <script>
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useAppStore } from '@/stores/app';
 
 export default {
   name: 'PageSidebar',
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const appStore = useAppStore();
     
     const sidebarCollapsed = computed(() => appStore.sidebarCollapsed);
@@ -191,8 +192,16 @@ export default {
     };
     
     const logout = () => {
+      // Limpiar datos de sesión del localStorage
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('rememberMe');
+      
+      // Limpiar el store
       appStore.logout();
-      // Aquí podrías redirigir al login
+      
+      // Redirigir al login usando Vue Router
+      router.push('/login');
     };
     
     const isActive = (path) => {
@@ -204,7 +213,8 @@ export default {
       currentUser,
       toggleSidebar,
       logout,
-      isActive
+      isActive,
+      router
     };
   }
 };

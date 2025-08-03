@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Sidebar />
-    <main class="main-content">
+    <main class="main-content" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
       <router-view />
     </main>
     
@@ -28,9 +28,11 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 import Sidebar from '../components/Sidebar.vue';
 import CustomAlert from '../components/CustomAlert.vue';
 import ChatbotComponent from '../components/Chatbot.vue';
+import { useAppStore } from '@/stores/app';
 
 export default {
   name: 'DashboardView',
@@ -38,6 +40,14 @@ export default {
     Sidebar,
     CustomAlert,
     ChatbotComponent
+  },
+  setup() {
+    const appStore = useAppStore();
+    const sidebarCollapsed = computed(() => appStore.sidebarCollapsed);
+    
+    return {
+      sidebarCollapsed
+    };
   },
   data() {
     return {
@@ -84,8 +94,10 @@ export default {
 #app {
   display: flex;
   height: 100vh;
-  width: 100%;
+  width: 100vw;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 /* Contenido principal */
@@ -93,14 +105,24 @@ export default {
   flex: 1;
   margin-left: 280px; /* Ancho del sidebar */
   overflow-y: auto;
-  background: #f8f9fa;
+  background: #e2e8f0;
   min-height: 100vh;
+  width: calc(100vw - 280px);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .main-content {
     margin-left: 0;
+    width: 100vw;
+  }
+}
+
+/* Cuando el sidebar está colapsado */
+@media (min-width: 769px) {
+  .sidebar-collapsed + .main-content {
+    margin-left: 80px;
+    width: calc(100vw - 80px);
   }
 }
 </style> 

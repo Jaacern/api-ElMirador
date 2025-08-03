@@ -62,7 +62,7 @@
 
     <!-- Generar Gasto Común Card -->
     <div class="card shadow-lg mb-4">
-      <div class="card-header custom-header d-flex justify-content-between align-items-center">
+      <div class="card-header custom-header gastos d-flex justify-content-between align-items-center">
         <h4 class="mb-0">
           <i class="bi bi-plus-square me-2"></i>Generar Gasto Común
         </h4>
@@ -114,7 +114,7 @@
 
     <!-- Lista de Gastos Comunes -->
     <div class="card shadow-lg">
-      <div class="card-header custom-header d-flex justify-content-between align-items-center">
+      <div class="card-header custom-header gastos d-flex justify-content-between align-items-center">
         <h4 class="mb-0">
           <i class="bi bi-list-check me-2"></i>Lista de Gastos Comunes
         </h4>
