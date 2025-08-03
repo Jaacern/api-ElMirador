@@ -517,7 +517,21 @@ export default {
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
   width: 100%;
-  max-width: 100%;
+  max-width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+/* Reset global para eliminar espacios no deseados */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Navbar */
@@ -529,9 +543,10 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  width: 100%;
+  width: 100vw;
   z-index: 1000;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  margin: 0;
 }
 
 .navbar-brand {
@@ -560,6 +575,9 @@ export default {
   display: flex;
   align-items: center;
   position: relative;
+  width: 100vw;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 .hero-badge {
@@ -613,6 +631,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
 }
 
 .floating-card {
@@ -622,21 +641,26 @@ export default {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   color: #1e293b;
   min-width: 200px;
-  margin: 0.5rem;
+  width: 100%;
+  max-width: 250px;
   transform: translateY(0);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
 }
 
 .floating-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
 }
 
 .card-1 {
   align-self: flex-start;
+  margin-bottom: 1rem;
 }
 
 .card-2 {
   align-self: flex-end;
+  margin-bottom: 1rem;
 }
 
 .card-3 {
@@ -644,9 +668,20 @@ export default {
 }
 
 .chart-value {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.5rem;
+  font-weight: 800;
   color: #3b82f6;
+  margin-top: 0.5rem;
+  line-height: 1;
+}
+
+.floating-card h6 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .trust-indicators {
@@ -671,6 +706,9 @@ export default {
 .features-section {
   padding: 100px 0;
   background: white;
+  width: 100vw;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 .feature-card {
@@ -700,6 +738,9 @@ export default {
 .ai-section {
   padding: 100px 0;
   background: #f8fafc;
+  width: 100vw;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 .ai-features {
@@ -729,6 +770,9 @@ export default {
   padding: 100px 0;
   background: #3b82f6;
   color: white;
+  width: 100vw;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 .stats-card {
@@ -765,6 +809,9 @@ export default {
   padding: 100px 0;
   background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
   color: white;
+  width: 100vw;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 .pricing-badge {
@@ -969,6 +1016,9 @@ export default {
 .collaboration-section {
   padding: 100px 0;
   background: white;
+  width: 100vw;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 .collaboration-image {
@@ -1014,6 +1064,9 @@ export default {
 .faq-section {
   padding: 100px 0;
   background: #f8fafc;
+  width: 100vw;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 .faq-item {
@@ -1065,6 +1118,9 @@ export default {
 .revolution-section {
   padding: 100px 0;
   background: white;
+  width: 100vw;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 .revolution-features {
@@ -1112,6 +1168,9 @@ export default {
   background: #0f172a;
   color: white;
   padding: 4rem 0 2rem;
+  width: 100vw;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 .newsletter-form {
@@ -1158,6 +1217,22 @@ export default {
     font-size: 2.5rem;
   }
   
+  /* Asegurar que no haya overflow en móviles */
+  .landing-page,
+  .hero-section,
+  .features-section,
+  .ai-section,
+  .scalable-section,
+  .pricing-section,
+  .collaboration-section,
+  .faq-section,
+  .revolution-section,
+  .footer {
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
   .hero-visuals {
     height: auto;
     margin-top: 2rem;
@@ -1168,6 +1243,12 @@ export default {
     margin: 0.5rem 0;
     width: 100%;
     max-width: 300px;
+    align-self: center !important;
+  }
+  
+  .hero-visuals {
+    height: auto;
+    padding: 2rem 0;
   }
   
   .trust-logos {

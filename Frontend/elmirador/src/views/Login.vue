@@ -114,6 +114,8 @@
       <div class="floating-shape shape-1"></div>
       <div class="floating-shape shape-2"></div>
       <div class="floating-shape shape-3"></div>
+      <div class="floating-shape shape-4"></div>
+      <div class="floating-shape shape-5"></div>
     </div>
   </div>
 </template>
@@ -207,27 +209,30 @@ export default {
 <style scoped>
 .login-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
+  padding: 2rem;
 }
 
 .login-container {
   width: 100%;
-  max-width: 400px;
-  padding: 2rem;
+  max-width: 450px;
   z-index: 10;
+  position: relative;
 }
 
 .login-card {
-  background: white;
-  border-radius: 20px;
-  padding: 2.5rem;
-  box-shadow: var(--shadow-lg);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 25px;
+  padding: 3rem;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
   position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .login-header {
@@ -244,14 +249,20 @@ export default {
 }
 
 .logo i {
-  font-size: 2rem;
-  color: var(--primary-color);
+  font-size: 2.5rem;
+  color: #3b82f6;
+  filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3));
 }
 
 .logo h2 {
   margin: 0;
-  font-weight: 700;
-  color: var(--dark-color);
+  font-weight: 800;
+  color: #1e293b;
+  font-size: 2rem;
+  background: linear-gradient(135deg, #1e293b, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .login-subtitle {
@@ -282,14 +293,17 @@ export default {
 
 .form-control {
   border-color: #e2e8f0;
-  border-radius: 10px;
-  padding: 0.75rem 1rem;
-  transition: all 0.2s ease;
+  border-radius: 12px;
+  padding: 0.875rem 1rem;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
 }
 
 .form-control:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .form-control.is-invalid {
@@ -314,22 +328,25 @@ export default {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
   border: none;
-  border-radius: 10px;
-  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  padding: 0.875rem 1.5rem;
   font-weight: 600;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
 .btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+  background: linear-gradient(135deg, #2563eb, #1e40af);
 }
 
 .btn-primary:disabled {
   opacity: 0.7;
   transform: none;
+  box-shadow: none;
 }
 
 .login-footer {
@@ -424,51 +441,99 @@ export default {
 .floating-shape {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  animation: float 6s ease-in-out infinite;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(147, 197, 253, 0.1));
+  animation: float 8s ease-in-out infinite;
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
 }
 
 .shape-1 {
-  width: 100px;
-  height: 100px;
-  top: 20%;
-  left: 10%;
+  width: 120px;
+  height: 120px;
+  top: 15%;
+  left: 8%;
   animation-delay: 0s;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(147, 197, 253, 0.1));
 }
 
 .shape-2 {
-  width: 150px;
-  height: 150px;
-  top: 60%;
-  right: 15%;
+  width: 180px;
+  height: 180px;
+  top: 55%;
+  right: 12%;
   animation-delay: 2s;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(110, 231, 183, 0.1));
 }
 
 .shape-3 {
+  width: 100px;
+  height: 100px;
+  bottom: 15%;
+  left: 15%;
+  animation-delay: 4s;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(251, 191, 36, 0.1));
+}
+
+.shape-4 {
+  width: 140px;
+  height: 140px;
+  top: 35%;
+  right: 25%;
+  animation-delay: 6s;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(252, 165, 165, 0.1));
+}
+
+.shape-5 {
   width: 80px;
   height: 80px;
-  bottom: 20%;
-  left: 20%;
-  animation-delay: 4s;
+  bottom: 35%;
+  right: 8%;
+  animation-delay: 3s;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(196, 181, 253, 0.1));
 }
 
 @keyframes float {
   0%, 100% {
-    transform: translateY(0px) rotate(0deg);
+    transform: translateY(0px) rotate(0deg) scale(1);
   }
-  50% {
-    transform: translateY(-20px) rotate(180deg);
+  33% {
+    transform: translateY(-15px) rotate(120deg) scale(1.05);
+  }
+  66% {
+    transform: translateY(-10px) rotate(240deg) scale(0.95);
   }
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .login-container {
+  .login-page {
     padding: 1rem;
+  }
+  
+  .login-container {
+    max-width: 100%;
   }
   
   .login-card {
     padding: 2rem;
+    border-radius: 20px;
+  }
+  
+  .logo h2 {
+    font-size: 1.75rem;
+  }
+  
+  .logo i {
+    font-size: 2rem;
+  }
+  
+  .floating-shape {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 1.5rem;
   }
   
   .logo h2 {
@@ -476,7 +541,7 @@ export default {
   }
   
   .logo i {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
   }
 }
 </style> 

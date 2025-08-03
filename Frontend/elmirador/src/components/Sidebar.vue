@@ -174,11 +174,13 @@
 
 <script>
 import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import { useAppStore } from '@/stores/app';
 
 export default {
   name: 'PageSidebar',
   setup() {
+    const route = useRoute();
     const appStore = useAppStore();
     
     const sidebarCollapsed = computed(() => appStore.sidebarCollapsed);
@@ -193,8 +195,8 @@ export default {
       // Aquí podrías redirigir al login
     };
     
-    const isActive = (route) => {
-      return this.$route.path === route;
+    const isActive = (path) => {
+      return route.path === path;
     };
     
     return {
