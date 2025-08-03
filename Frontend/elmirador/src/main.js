@@ -1,21 +1,42 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Asegúrate de que Bootstrap está incluido
-import './assets/styles.css'; // Archivo de estilos personalizados para el dark theme
+import store from './store/store';
+import { createPinia } from 'pinia';
+
+// UI Libraries
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale } from 'chart.js';
-ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  LineElement,   // Para las líneas del gráfico
-  PointElement,  // Para los puntos en las líneas
-  CategoryScale, // Para la escala de categorías en el eje X
-  LinearScale    // Para la escala lineal en el eje Y
-);
+import '@fortawesome/fontawesome-free/css/all.css';
 
+// PrimeVue
+import PrimeVue from 'primevue/config';
+import 'primevue/resources/themes/lara-light-blue/theme.css';
+import 'primevue/resources/primevue.min.css';
+import 'primeicons/primeicons.css';
 
-createApp(App)
-  .use(router)
-  .mount('#app');
+// Chart.js
+import Chart from 'chart.js/auto';
+window.Chart = Chart;
+
+// Custom styles
+import './assets/styles.css';
+import './assets/design-system.css';
+
+// Plugins
+import alertPlugin from './plugins/alertPlugin.js';
+
+// Create app
+const app = createApp(App);
+const pinia = createPinia();
+
+app.use(router)
+   .use(store)
+   .use(pinia)
+   .use(PrimeVue, {
+     ripple: true,
+     inputStyle: 'filled'
+   })
+   .use(alertPlugin)
+   .mount('#app');

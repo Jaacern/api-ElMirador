@@ -1,10 +1,13 @@
 from flask import jsonify, request
 from config.config import app, mongo
-from models.models import Departamento, Residente, GastoComun
+from models.models import Departamento, Residente, GastoComun,Reclamo, Personal
 from bson import ObjectId
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+
+
+##############DEPARTAMENTOS##############
 
 @app.route('/departamentos', methods=['POST'])
 def create_departamento():
@@ -77,6 +80,12 @@ def delete_departamento(cod_depto):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+#########################################
+
+
+
+##############ACCESOS###################
+
 
 @app.route('/accesos', methods=['POST'])
 def create_acceso():
@@ -152,6 +161,15 @@ def delete_acceso(username):
         return jsonify({"error": "Acceso no encontrado"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+    
+#########################################
+
+
+
+    
+################CUOTAS##################
 
 # Rutas para CuotaGC
 @app.route('/cuotas', methods=['POST'])
@@ -229,42 +247,58 @@ def delete_cuota(id_cuota):
         return jsonify({"error": str(e)}), 500
     
 
+    
+#########################################
 
 
+
+    
+############RESIDENTES###################
 
 
 # Ruta para crear un nuevo Residente (POST)
 @app.route('/residentes', methods=['POST'])
 def add_residente():
-    data = request.get_json()  # Obtener datos del cuerpo de la solicitud
-    
-    # Verificamos si los campos necesarios están presentes
-    if not data.get("RutArre") or not data.get("Nombre"):
-        return jsonify({"error": "Faltan campos obligatorios"}), 400
-    
-    # Crear un nuevo residente
-    residente = {
-        "RutArre": data.get("RutArre"),
-        "Nombre": data.get("Nombre"),
-        "ApePat": data.get("ApePat", ""),
-        "ApeMat": data.get("ApeMat", ""),
-        "Email": data.get("Email", ""),
-        "Fono1": data.get("Fono1", ""),
-        "Fono2": data.get("Fono2", ""),
-        "nro_departamento": data.get("nro_departamento")
-    }
-    
-    # Insertar el residente en la base de datos
-    result = mongo.db.residentes.insert_one(residente)
-    return jsonify({
-        "message": "Residente creado exitosamente",
-          "_id": str(result.inserted_id)}), 201
+    try:
+        if mongo is None or mongo.db is None:
+            return jsonify({"error": "Base de datos no disponible"}), 503
+            
+        data = request.get_json()  # Obtener datos del cuerpo de la solicitud
+        
+        # Verificamos si los campos necesarios están presentes
+        if not data.get("RutArre") or not data.get("Nombre"):
+            return jsonify({"error": "Faltan campos obligatorios"}), 400
+        
+        # Crear un nuevo residente
+        residente = {
+            "RutArre": data.get("RutArre"),
+            "Nombre": data.get("Nombre"),
+            "ApePat": data.get("ApePat", ""),
+            "ApeMat": data.get("ApeMat", ""),
+            "Email": data.get("Email", ""),
+            "Fono1": data.get("Fono1", ""),
+            "Fono2": data.get("Fono2", ""),
+            "nro_departamento": data.get("nro_departamento")
+        }
+        
+        # Insertar el residente en la base de datos
+        result = mongo.db.residentes.insert_one(residente)
+        return jsonify({
+            "message": "Residente creado exitosamente",
+              "_id": str(result.inserted_id)}), 201
+    except Exception as e:
+        return jsonify({"error": f"Error al crear residente: {str(e)}"}), 500
 
 # Ruta para obtener todos los Residentes (GET)
 @app.route('/residentes', methods=['GET'])
 def get_residentes():
-    residentes = mongo.db.residentes.find()  # Buscar todos los residentes
-    return jsonify([Residente.to_json(res) for res in residentes]), 200
+    try:
+        if mongo is None or mongo.db is None:
+            return jsonify({"error": "Base de datos no disponible"}), 503
+        residentes = mongo.db.residentes.find()  # Buscar todos los residentes
+        return jsonify([Residente.to_json(res) for res in residentes]), 200
+    except Exception as e:
+        return jsonify({"error": f"Error al obtener residentes: {str(e)}"}), 500
 
 # Ruta para obtener un Residente por ID (GET)
 @app.route('/residentes/<id>', methods=['GET'])
@@ -313,7 +347,96 @@ def delete_residente(id):
 
 
 
+    
+#########################################
 
+
+############## PERSONAL ##############
+
+# Crear un nuevo personal
+@app.route('/personal', methods=['POST'])
+def create_personal():
+    try:
+        data = request.json
+        if data:
+            # Validar que el RutPersonal no exista
+            if mongo.db.personal.find_one({"RutPersonal": data["RutPersonal"]}):
+                return jsonify({"error": "RutPersonal ya existe"}), 400
+            
+            # Convertir horas de string a formato apropiado si existen
+            if "HoraInicioJ" in data and data["HoraInicioJ"]:
+                data["HoraInicioJ"] = datetime.strptime(data["HoraInicioJ"], "%H:%M").time()
+            if "HoraFinJ" in data and data["HoraFinJ"]:
+                data["HoraFinJ"] = datetime.strptime(data["HoraFinJ"], "%H:%M").time()
+            
+            result = mongo.db.personal.insert_one(data)
+            return jsonify({"message": "Personal creado exitosamente", "id": str(result.inserted_id)}), 201
+        return jsonify({"error": "Datos inválidos"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# Obtener lista de todo el personal
+@app.route('/personal', methods=['GET'])
+def get_personal():
+    try:
+        if mongo is None or mongo.db is None:
+            return jsonify({"error": "Base de datos no disponible"}), 503
+        personal_list = mongo.db.personal.find()
+        return jsonify([Personal.to_json(personal) for personal in personal_list]), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# Obtener un personal por su ID
+@app.route('/personal/<string:id>', methods=['GET'])
+def get_personal_by_id(id):
+    try:
+        personal = mongo.db.personal.find_one({"_id": ObjectId(id)})
+        if not personal:
+            return jsonify({"error": "Personal no encontrado"}), 404
+        return jsonify(Personal.to_json(personal)), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# Actualizar un personal existente
+@app.route('/personal/<string:id>', methods=['PUT'])
+def update_personal(id):
+    try:
+        data = request.json
+        if data:
+            # Convertir horas de string a formato apropiado si existen
+            if "HoraInicioJ" in data and data["HoraInicioJ"]:
+                data["HoraInicioJ"] = datetime.strptime(data["HoraInicioJ"], "%H:%M").time()
+            if "HoraFinJ" in data and data["HoraFinJ"]:
+                data["HoraFinJ"] = datetime.strptime(data["HoraFinJ"], "%H:%M").time()
+            
+            result = mongo.db.personal.update_one({"_id": ObjectId(id)}, {"$set": data})
+            if result.matched_count == 0:
+                return jsonify({"error": "Personal no encontrado"}), 404
+            return jsonify({"message": "Personal actualizado exitosamente"}), 200
+        return jsonify({"error": "Datos inválidos"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# Eliminar un personal
+@app.route('/personal/<string:id>', methods=['DELETE'])
+def delete_personal(id):
+    try:
+        result = mongo.db.personal.delete_one({"_id": ObjectId(id)})
+        if result.deleted_count == 0:
+            return jsonify({"error": "Personal no encontrado"}), 404
+        return jsonify({"message": "Personal eliminado exitosamente"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+
+
+##$########GASTOS COMUNES################
 
 
 
@@ -340,12 +463,17 @@ def add_gasto_comun():
 
 @app.route('/gastos-comunes', methods=['GET'])
 def get_gastos_comunes():
-    depto = request.args.get('departamento')
-    if depto:
-        gastos = mongo.db.gastos_comunes.find({"nro_departamento": depto})
-    else:
-        gastos = mongo.db.gastos_comunes.find()
-    return jsonify([GastoComun.to_json(gasto) for gasto in gastos]), 200
+    try:
+        if mongo is None or mongo.db is None:
+            return jsonify({"error": "Base de datos no disponible"}), 503
+        depto = request.args.get('departamento')
+        if depto:
+            gastos = mongo.db.gastos_comunes.find({"nro_departamento": depto})
+        else:
+            gastos = mongo.db.gastos_comunes.find()
+        return jsonify([GastoComun.to_json(gasto) for gasto in gastos]), 200
+    except Exception as e:
+        return jsonify({"error": f"Error al obtener gastos comunes: {str(e)}"}), 500
 
 @app.route('/gastos-comunes/<id>', methods=['PUT'])
 def update_gasto_comun(id):
@@ -372,10 +500,183 @@ def delete_gasto_comun(id):
 
 @app.route('/gastos-comunes/pendientes', methods=['GET'])
 def get_gastos_pendientes():
-    gastos = mongo.db.gastos_comunes.find({"estado_pago": False})
-    return jsonify([GastoComun.to_json(gasto) for gasto in gastos]), 200
+    try:
+        if mongo is None or mongo.db is None:
+            return jsonify({"error": "Base de datos no disponible"}), 503
+        gastos = mongo.db.gastos_comunes.find({"estado_pago": False})
+        return jsonify([GastoComun.to_json(gasto) for gasto in gastos]), 200
+    except Exception as e:
+        return jsonify({"error": f"Error al obtener gastos pendientes: {str(e)}"}), 500
+
+    
+#########################################
 
 
+
+    
+#############RECLAMOS####################
+
+# Crear un nuevo reclamo
+@app.route('/reclamos', methods=['POST'])
+def crear_reclamo():
+    try:
+        # Obtener datos del request
+        data = request.json
+        
+        # Validaciones básicas
+        if not data.get('titulo') or not data.get('categoria'):
+            return jsonify({"error": "Título y categoría son obligatorios"}), 400
+        
+        # Establecer estado por defecto si no se proporciona
+        data['estado'] = data.get('estado', 'Activo')
+        
+        # Insertar en la base de datos
+        resultado = mongo.db.reclamos.insert_one(data)
+        
+        # Obtener el reclamo insertado
+        reclamo_insertado = mongo.db.reclamos.find_one({"_id": resultado.inserted_id})
+        
+        return jsonify(Reclamo.to_json(reclamo_insertado)), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Obtener todos los reclamos
+@app.route('/reclamos', methods=['GET'])
+def obtener_reclamos():
+    try:
+        # Obtener parámetros de filtrado opcionales
+        estado = request.args.get('estado')
+        categoria = request.args.get('categoria')
+        urgencia = request.args.get('urgencia')
+        
+        # Construir filtro
+        filtro = {}
+        if estado:
+            filtro['estado'] = estado
+        if categoria:
+            filtro['categoria'] = categoria
+        if urgencia:
+            filtro['urgencia'] = urgencia
+        
+        # Obtener reclamos con filtro
+        reclamos = mongo.db.reclamos.find(filtro)
+        
+        return jsonify([Reclamo.to_json(reclamo) for reclamo in reclamos]), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Obtener un reclamo específico por ID
+@app.route('/reclamos/<id>', methods=['GET'])
+def obtener_reclamo(id):
+    try:
+        # Convertir ID a ObjectId
+        reclamo_id = ObjectId(id)
+        
+        # Buscar reclamo
+        reclamo = mongo.db.reclamos.find_one({"_id": reclamo_id})
+        
+        if not reclamo:
+            return jsonify({"error": "Reclamo no encontrado"}), 404
+        
+        return jsonify(Reclamo.to_json(reclamo)), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Actualizar un reclamo
+@app.route('/reclamos/<id>', methods=['PUT'])
+def actualizar_reclamo(id):
+    try:
+        # Convertir ID a ObjectId
+        reclamo_id = ObjectId(id)
+        
+        # Obtener datos de actualización
+        data = request.json
+        
+        # Eliminar el _id si está en los datos de actualización
+        data.pop('_id', None)
+        
+        # Actualizar reclamo
+        resultado = mongo.db.reclamos.update_one(
+            {"_id": reclamo_id},
+            {"$set": data}
+        )
+        
+        if resultado.modified_count == 0:
+            return jsonify({"error": "Reclamo no encontrado o sin cambios"}), 404
+        
+        # Obtener reclamo actualizado
+        reclamo_actualizado = mongo.db.reclamos.find_one({"_id": reclamo_id})
+        
+        return jsonify(Reclamo.to_json(reclamo_actualizado)), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Eliminar un reclamo
+@app.route('/reclamos/<id>', methods=['DELETE'])
+def eliminar_reclamo(id):
+    try:
+        # Convertir ID a ObjectId
+        reclamo_id = ObjectId(id)
+        
+        # Eliminar reclamo
+        resultado = mongo.db.reclamos.delete_one({"_id": reclamo_id})
+        
+        if resultado.deleted_count == 0:
+            return jsonify({"error": "Reclamo no encontrado"}), 404
+        
+        return jsonify({"mensaje": "Reclamo eliminado exitosamente"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Cambiar estado de un reclamo
+@app.route('/reclamos/<id>/estado', methods=['PATCH'])
+def cambiar_estado_reclamo(id):
+    try:
+        # Convertir ID a ObjectId
+        reclamo_id = ObjectId(id)
+        
+        # Obtener nuevo estado
+        nuevo_estado = request.json.get('estado')
+        
+        # Validar estado
+        if nuevo_estado not in ['Activo', 'Inactivo']:
+            return jsonify({"error": "Estado inválido"}), 400
+        
+        # Actualizar estado
+        resultado = mongo.db.reclamos.update_one(
+            {"_id": reclamo_id},
+            {"$set": {"estado": nuevo_estado}}
+        )
+        
+        if resultado.modified_count == 0:
+            return jsonify({"error": "Reclamo no encontrado"}), 404
+        
+        # Obtener reclamo actualizado
+        reclamo_actualizado = mongo.db.reclamos.find_one({"_id": reclamo_id})
+        
+        return jsonify(Reclamo.to_json(reclamo_actualizado)), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Filtrar reclamos por estado
+@app.route('/reclamos/filtrar/estado', methods=['GET'])
+def filtrar_reclamos_por_estado():
+    try:
+        estado = request.args.get('estado', 'Activo')
+        
+        # Validar estado
+        if estado not in ['Activo', 'Inactivo']:
+            return jsonify({"error": "Estado inválido"}), 400
+        
+        # Filtrar reclamos
+        reclamos = mongo.db.reclamos.find({"estado": estado})
+        
+        return jsonify([Reclamo.to_json(reclamo) for reclamo in reclamos]), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 

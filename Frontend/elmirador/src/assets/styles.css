@@ -1,176 +1,430 @@
-/* Estilos generales para el tema oscuro */
+/* Importar Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Estilos globales mejorados para El Mirador */
+
+:root {
+  --primary-color: #2563eb;
+  --primary-dark: #1d4ed8;
+  --secondary-color: #64748b;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --danger-color: #ef4444;
+  --info-color: #06b6d4;
+  --light-color: #f8fafc;
+  --dark-color: #1e293b;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --border-radius: 0.5rem;
+  --transition: all 0.2s ease-in-out;
+  --font-primary: 'Poppins', sans-serif;
+  --font-secondary: 'Inter', sans-serif;
+}
+
+/* Estilos base */
 body {
-    background-color: #121212; /* Fondo oscuro */
-    color: #e0e0e0; /* Texto claro */
+  font-family: var(--font-secondary);
+  background: #f8f9fa;
+  min-height: 100vh;
+  color: var(--dark-color);
+  overflow-x: hidden;
 }
 
-/* Definir las fuentes Garet-Book y GaretHeavy */
-@font-face {
-    font-family: 'GaretBook';
-    src: url('./fonts/GaretBook.ttf') format('truetype'); /* Ruta relativa */
-    font-weight: normal;
-    font-style: normal;
+/* Contenedor principal */
+.main-container {
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
+  margin: 0;
+  min-height: calc(100vh - 2rem);
 }
 
-@font-face {
-    font-family: 'GaretHeavy';
-    src: url('./fonts/GaretHeavy.ttf') format('truetype'); /* Ruta relativa */
-    font-weight: bold;
-    font-style: normal;
+/* Headers personalizados */
+.custom-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  border: none;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  padding: 1rem 1.5rem;
 }
 
-/* Aplicar GaretBook para los títulos y textos principales */
-h2, h3, .sidebar-title, .nav-link, .navbar .navbar-brand {
-    font-family: 'GaretBook', sans-serif; /* Aplicar GaretBook */
-    color: #e0e0e0; /* Color de texto claro */
+.custom-header h4 {
+  margin: 0;
+  font-weight: 600;
+  color: white;
 }
 
-/* Estilos para la Navbar */
-.navbar {
-    background-color: #333; /* Fondo oscuro de la navbar */
-    color: #fff; /* Texto blanco en la navbar */
-    z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
+/* Estilos para títulos */
+.page-title {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 2.5rem;
+  color: var(--dark-color);
+  margin-bottom: 1rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.navbar a {
-    color: #fff !important; /* Enlaces de la navbar en blanco */
+.page-title::before {
+  content: '';
+  width: 4px;
+  height: 2.5rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  border-radius: 2px;
 }
 
-.navbar a:hover {
-    color: #bb86fc !important; /* Color al pasar el mouse */
+.page-title i {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-right: 0.5rem;
 }
 
-/* Estilos para la Sidebar */
-.sidebar {
-    background-color: #343a40; /* Fondo oscuro de la sidebar */
-    color: white; /* Texto blanco */
-    padding: 20px;
-    width: 230px; /* Ancho de la sidebar */
-    height: 100vh; /* Altura completa */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    position: fixed;
-    top: 40px; /* Ajuste debajo del navbar */
-    left: 0; /* Fijar al lado izquierdo */
-    z-index: 100;
+.section-title {
+  font-family: var(--font-primary);
+  font-weight: 600;
+  font-size: 1.75rem;
+  color: var(--dark-color);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-/* Estilo para el título de la sidebar */
-.sidebar-title {
-    color: #ccc;
-    font-family: 'GaretBook', sans-serif; /* Título con GaretBook */
-    font-size: 16px; /* Tamaño de fuente reducido */
-    font-weight: bold;
-    margin-bottom: 25px;
+.section-title i {
+  font-size: 1.5rem;
+  color: var(--primary-color);
 }
 
-/* Estilo para los enlaces de la sidebar */
-.nav-link {
-    color: white;
-    padding: 13px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    font-family: 'GaretBook', sans-serif; /* Aplicar GaretBook a los enlaces */
-    font-size: 14px; /* Tamaño de fuente reducido */
+.card-title {
+  font-family: var(--font-primary);
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--dark-color);
+  margin-bottom: 0.5rem;
+  text-align: center;
 }
 
-/* Espaciado entre el icono y el texto */
-.nav-link i {
-    margin-right: 10px;
+.card-title i {
+  font-size: 1.1rem;
+  color: var(--primary-color);
 }
 
-/* Efecto hover: cambia el color de fondo y resalta */
-.nav-link:hover {
-    background-color: #495057; /* Fondo más claro al pasar el mouse */
-    color: #bb86fc; /* Color del texto al pasar el mouse */
-    border-radius: 5px;
+/* Cards mejoradas */
+.card {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  overflow: hidden;
+  background: white;
 }
 
-/* Estilo para la opción seleccionada (activo) */
-.nav-link.active {
-    background-color: #2f353b; /* Fondo más oscuro para la opción seleccionada */
-    color: #bb86fc; /* Color del texto para la opción seleccionada */
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
 }
 
-/* Ajuste de espaciado de la lista */
-ul.nav {
-    padding-top: 25px; /* Añadir más espacio entre el título y las opciones */
+.card-header {
+  border-bottom: 1px solid var(--border-color);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  font-weight: 600;
 }
 
-/* Opciones deshabilitadas (si es necesario) */
-.nav-link.disabled {
-    color: #666; /* Color gris para las opciones deshabilitadas */
-    pointer-events: none; /* Evitar que se pueda hacer clic */
+/* Botones mejorados */
+.btn {
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: var(--transition);
+  border: none;
+  padding: 0.5rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* Estilos adicionales para el sidebar (opcional) */
-.sidebar a {
-    color: #2bf787a2; /* Enlaces de la sidebar */
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
-.sidebar a:hover {
-    color: #2bf787; /* Color de los enlaces al pasar el mouse */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
 }
 
-/* Opciones de búsqueda */
-input[type="text"] {
-    background-color: #333; /* Fondo oscuro en el input de búsqueda */
-    color: #fff; /* Texto blanco */
-    border: 1px solid #444; /* Borde del input */
-    transition: border-color 0.3s ease, background-color 0.3s ease;
-    font-family: 'GaretBook', sans-serif; /* Aplicar GaretBook al campo de búsqueda */
-    font-size: 14px; /* Tamaño de fuente reducido */
-    padding-left: 10px; /* Espacio al lado izquierdo del campo de búsqueda */
+.btn-success {
+  background: linear-gradient(135deg, var(--success-color), #059669);
+  color: white;
 }
 
-input[type="text"]:hover {
-    border-color: #bb86fc; /* Color del borde al pasar el mouse */
-    background-color: #444; /* Fondo ligeramente más claro */
+.btn-warning {
+  background: linear-gradient(135deg, var(--warning-color), #d97706);
+  color: white;
 }
 
-input[type="text"]:focus {
-    border-color: #bb86fc; /* Borde al hacer focus */
-    background-color: #444; /* Fondo más claro */
-    color: #fff; /* Texto blanco */
+.btn-danger {
+  background: linear-gradient(135deg, var(--danger-color), #dc2626);
+  color: white;
 }
 
-input[type="text"]::placeholder {
-    color: #fff; /* Texto blanco para el placeholder */
+.btn-info {
+  background: linear-gradient(135deg, var(--info-color), #0891b2);
+  color: white;
 }
 
-/* Estilo para los íconos de notificación y mensaje en la navbar */
-.navbar .bi {
-    font-size: 1.5rem; /* Ajustar el tamaño de los íconos */
-    cursor: pointer;
-    margin-left: 15px; /* Separación entre los íconos */
-    transition: color 0.3s ease; /* Transición suave en los íconos */
+.btn-secondary {
+  background: linear-gradient(135deg, var(--secondary-color), #475569);
+  color: white;
 }
 
-/* Efecto hover para los íconos en la navbar */
-.navbar .bi:hover {
-    color: #bb86fc; /* Color al pasar el mouse */
+/* Tablas mejoradas */
+.table {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  background: white;
 }
 
-/* Sección de los íconos y el campo de búsqueda (a la derecha) */
-.navbar .navbar-right {
-    display: flex;
-    align-items: center;
-    margin-left: auto; /* Empuja esta sección a la derecha */
-    margin-right: 20px; /* Separa los íconos y el campo de búsqueda del borde derecho */
+.table thead th {
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border: none;
+  font-weight: 600;
+  color: var(--dark-color);
+  padding: 1rem;
 }
 
+.table tbody td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
 
+.table tbody tr:hover {
+  background-color: #f8fafc;
+  transition: var(--transition);
+}
 
-/* Asegurarse de que los gráficos tengan un fondo claro y legible */
-.estadisticas-graph {
-    background-color: #ffffff !important; /* Fondo blanco para los gráficos */
+/* Formularios mejorados */
+.form-control, .form-select {
+  border-radius: var(--border-radius);
+  border: 2px solid var(--border-color);
+  padding: 0.75rem 1rem;
+  transition: var(--transition);
+  font-size: 0.95rem;
+  background: white;
+  color: var(--dark-color);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  outline: none;
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 0.5rem;
+}
+
+/* Badges mejorados */
+.badge {
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+}
+
+/* Estados de pago */
+.estado-pagado {
+  background: linear-gradient(135deg, var(--success-color), #059669);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.estado-pendiente {
+  background: linear-gradient(135deg, var(--warning-color), #d97706);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-container {
+    margin: 0.5rem;
+  }
+  
+  .card {
+    margin-bottom: 1rem;
+  }
+  
+  .btn {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .table-responsive {
+    border-radius: var(--border-radius);
+  }
+}
+
+/* Estilos específicos para componentes */
+.stats-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: var(--transition);
+}
+
+.stats-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.stats-card h3 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.stats-card p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Loading spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Tooltips personalizados */
+.tooltip-custom {
+  position: relative;
+  cursor: help;
+}
+
+.tooltip-custom::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--dark-color);
+  color: white;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition);
+  z-index: 1000;
+}
+
+.tooltip-custom:hover::after {
+  opacity: 1;
+}
+
+/* Estilos para modales */
+.modal-content {
+  border-radius: var(--border-radius);
+  border: none;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+/* Estilos para alertas */
+.alert {
+  border-radius: var(--border-radius);
+  border: none;
+  font-weight: 500;
+}
+
+.alert-success {
+  background: linear-gradient(135deg, var(--success-color), #059669);
+  color: white;
+}
+
+.alert-warning {
+  background: linear-gradient(135deg, var(--warning-color), #d97706);
+  color: white;
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, var(--danger-color), #dc2626);
+  color: white;
+}
+
+.alert-info {
+  background: linear-gradient(135deg, var(--info-color), #0891b2);
+  color: white;
+}
+
+/* Estilos para gráficos */
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+.chart-container canvas {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+/* Responsive para gráficos */
+@media (max-width: 768px) {
+  .chart-container {
+    height: 250px;
+  }
+}
   
