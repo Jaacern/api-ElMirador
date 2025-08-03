@@ -250,7 +250,7 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 ## 👨‍💻 Autor
 
-**Tu Nombre** - [@tu-usuario](https://github.com/jaacern)
+**Javier Cerna** - [@tjaacern](https://github.com/jaacern)
 
 - 🌐 [Portfolio](https://javiercerna.dev)
 - 📧 [Email](mailto:javiercernafr@gmail.com)
